@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <title>Insira seus dados para acessar Slope</title>
+
+    <link rel="stylesheet" href="{% static '/bootstrap/dist/css/bootstrap.min.css' %}"/>
+
+    <link href="{% static '/bootstrap/dist/css/signin.css' %}" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin" method="POST" action=".">
+      {% csrf_token %}
+      <img src="{% static '/img/logo.png' %}" alt="Slope" width="100%" height="100%"></a>
+      <h1 class="h3 mb-3 font-weight-normal">Insira seus dados de acesso</h1>
+      {% include 'partials/messages.html' %}
+      <label for="userInput" class="sr-only">Usuário</label>
+      <input type="text" id="userInput" name="username" class="form-control" placeholder="Nome de usuário" required autofocus>
+      <label for="passInput" class="sr-only">Password</label>
+      <input type="password" id="passInput" name="password" class="form-control" placeholder="Senha" required>
+      <button class="btn btn-lg btn-success btn-block" type="submit">Entrar</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+    </form>
+  </body>
+</html>

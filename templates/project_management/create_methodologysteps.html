@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+
+    Adicionar Metodologia - {{ block.super }}
+
+{% endblock title %}
+
+{% block navlink %}
+<div class="position-sticky pt-3">
+<ul class="nav flex-column">
+    <li class="nav-item">
+    <a class="nav-link"   href="/">
+        <span data-feather="home"></span>
+        Página Inicial
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link"  href="{% url 'project_management:management' %}">
+        <span data-feather="home"></span>
+        Painel de gerenciamento
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:add_project' %}">
+        <span data-feather="file"></span>
+        Adicionar projetos
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link active" href="{% url 'project_management:all_methodologies' %}">
+        <span data-feather="file"></span>
+        Metodologias de Data Science
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_team_members' %}">
+        <span data-feather="file"></span>
+        Equipe
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+        <span data-feather="file"></span>
+        Relatório
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'accounts:add_user' %}">
+        <span data-feather="file"></span>
+        Controle de Acessos
+    </a>
+    </li>
+</ul>
+</div>
+{%endblock navlink%}
+{% block main %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="col-md-8">
+            <h1>Insira os dados da Metodologia</h1>
+            {% include 'partials/messages.html' %}
+            <form action="." method="POST">
+                {% csrf_token %}
+                <div class="form-group" id="input-group-1">
+                    <label for="{{ methodology_form.name.id_for_label }}">Nome da Metodologia:</label>
+                    {{ methodology_form.name|add_class:"form-control"|attr:"autofocus" }}
+                    <label for="{{ methodology_form.description.id_for_label }}">Descrição da metodologia:</label>
+                    {{ methodology_form.description|add_class:"form-control" }}
+                </div>
+                <div class="form-group" id="input-group-2">
+                    <h4>Etapas da Metodologia</h4>
+                    <table class="table">
+                        {{ steps_formset.management_form }}
+                        {% for step_form in steps_formset %}
+                            <div class="inlineformset row p-2">
+                                {% if step_form.methodology.value > 0 %}
+                                    <input name="stepsformset-{{ forloop.counter0 }}-methodology" id="id_stepsformset-{{ forloop.counter0 }}-methodology" value= "{{ step_form.methodology.value   }}" type="hidden"  >
+                                    <input name="stepsformset-{{ forloop.counter0 }}-id" id="id_stepsformset-{{ forloop.counter0 }}-id" value= "{{ step_form.id.value }}"  type="hidden" >
+                                    <input name="stepsformset-{{ forloop.counter0 }}-DELETE" id="id_stepsformset-{{ forloop.counter0 }}-DELETE"  type="checkbox" >
+                                {% endif %}
+                                <div class="col-xs ">
+                                    <label for="{{ step_form.id_for_label }}">Etapa:</label> 
+                                </div>                                                   
+                                <div class="col">
+                                    <input name="stepsformset-{{ forloop.counter0 }}-order" id="id_stepsformset-{{ forloop.counter0 }}-order" value= "{{ forloop.counter }}" class="form-control" >
+                                </div>
+                                <div class="col-xs">
+                                    <label for="{{ step_form.id_for_label }}">Nome:</label> 
+                                </div>  
+                                <div class="col-8">
+                                    <input name="stepsformset-{{ forloop.counter0 }}-name" id="id_stepsformset-{{ forloop.counter0 }}-name" value="{{ step_form.name.value }}" class="form-control" >
+                                </div>
+                            </div>
+                        
+
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <button class="btn btn-success" type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block footer %}
+<script type="text/javascript">
+    $(function() {
+        $('.inlineformset').formset({
+            prefix: 'stepsformset',
+            addText: 'Adicionar outra etapa',          // Text for the add link
+            deleteText: 'Remover etapa',            // Text for the delete link
+            addCssClass: 'btn btn-secondary',          // CSS class applied to the add link
+            deleteCssClass: 'btn btn-secondary',    // CSS class applied to the delete link
+        });
+    })
+</script>
+{% endblock footer %}

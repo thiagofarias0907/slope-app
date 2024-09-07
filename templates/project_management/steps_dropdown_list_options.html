@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for step in steps %}
+    <option value="{{ step.pk }}">{{step.order}} - {{ step.name }}</option>
+{% endfor %}

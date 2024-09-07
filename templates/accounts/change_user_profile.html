@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block navlink %}
+<div class="position-sticky pt-3">
+<ul class="nav flex-column">
+    <li class="nav-item">
+    <a class="nav-link"   href="/">
+        <span data-feather="home"></span>
+        Página Inicial
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link"  href="{% url 'project_management:management' %}">
+        <span data-feather="home"></span>
+        Painel de gerenciamento
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:add_project' %}">
+        <span data-feather="file"></span>
+        Adicionar projetos
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_methodologies' %}">
+        <span data-feather="file"></span>
+        Metodologias de Data Science
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_team_members' %}">
+        <span data-feather="file"></span>
+        Equipe
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+        <span data-feather="file"></span>
+        Relatório
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link active" href="{% url 'accounts:add_user' %}">
+        <span data-feather="file"></span>
+        Controle de Acessos
+    </a>
+    </li>
+</ul>
+</div>
+{%endblock navlink%}
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 form-group border-bottom">
+  <div class="col-md-9 ms-sm-auto col-lg-10 col-xl-12">
+      <h1>Configurar Imagem de Perfil de Usuário</h1>
+      {% include 'partials/messages.html' %}
+      <div class="col-lg-4">
+            <div class="text-center">
+                <div class="card" style="width: 36rem;">
+                    {% if user.user_profile.picture %}
+                        <a href="{% url 'accounts:update_profile' user.user_profile %} ">
+                        <img src="{{ user.user_profile.picture.url }}" class="card-img-top" alt="profile_pic">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:change_profile' %} ">
+                            <img src="{% static '/img/profile_default.png' %}" class="card-img-top" alt="profile_pic">
+                        </a>
+                    {% endif %}
+                    {% if user.user_profile %}
+                        <form method="POST" action="{% url 'accounts:update_profile' user.username %}" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="form-group" style="margin:10px">
+                            <label for="{{ form.picture.id_for_label }}" >Atualizar imagem do Perfil:</label>
+                            {{ form.picture|add_class:"form-control-file"|attr:"autofocus" }}
+                          </div>
+                          <button type="submit" class="btn btn-success">Atualizar</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="." enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="form-group" style="margin:10px">
+                            <label for="{{ form.picture.id_for_label }}" >Alterar imagem do Perfil:</label>
+                            {{ form.picture|add_class:"form-control-file"|attr:"autofocus" }}
+                          </div>
+                          <button type="submit" class="btn btn-success">Alterar</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+      </div>
+  </div>
+</div>
+{% endblock main %}
+{% block footer %}
+{% endblock footer %}

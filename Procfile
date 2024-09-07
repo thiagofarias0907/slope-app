@@ -1,0 +1,1 @@
+web gunicorn slope_app.wsgi --log-file -

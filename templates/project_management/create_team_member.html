@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+
+    Adicionar Metodologia - {{ block.super }}
+
+{% endblock title %}
+
+{% block navlink %}
+<div class="position-sticky pt-3">
+<ul class="nav flex-column">
+    <li class="nav-item">
+    <a class="nav-link"   href="/">
+        <span data-feather="home"></span>
+        Página Inicial
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link"  href="{% url 'project_management:management' %}">
+        <span data-feather="home"></span>
+        Painel de gerenciamento
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:add_project' %}">
+        <span data-feather="file"></span>
+        Adicionar projetos
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_methodologies' %}">
+        <span data-feather="file"></span>
+        Metodologias de Data Science
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link active" href="{% url 'project_management:all_team_members' %}">
+        <span data-feather="file"></span>
+        Equipe
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+        <span data-feather="file"></span>
+        Relatório
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'accounts:add_user' %}">
+        <span data-feather="file"></span>
+        Controle de Acessos
+    </a>
+    </li>
+</ul>
+</div>
+{%endblock navlink%}
+{% block main %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="col-md-8">
+            <h1>Insira os dados da pessoa</h1>
+            {% include 'partials/messages.html' %}
+            <form action="." method="POST">
+                {% csrf_token %}
+                <div class="row form-group" id="input-group-1">
+                    <div class="col-6">
+                        <label for="{{ form.first_name.id_for_label }}">Nome:</label>
+                        {{ form.first_name|add_class:"form-control"|attr:"autofocus" }}
+                    </div>
+                    <div class="col-6">
+                        <label for="{{ form.last_name.id_for_label }}">Sobrenome:</label>
+                        {{ form.last_name|add_class:"form-control" }}
+                    </div>
+                </div>
+                <div class="form-group row" id="input-group-2">
+                    <div class="col-6">
+                        <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                        {{ form.email|add_class:"form-control" }}
+                    </div>
+                    <div class="col-6">
+                        <label for="{{ form.occupation.id_for_label }}">Cargo:</label>
+                        {{ form.occupation|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <button class="btn btn-success" type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock main %}

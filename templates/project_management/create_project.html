@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+
+    Adicionar Projeto - {{ block.super }}
+
+{% endblock title %}
+
+{% block navlink %}
+<div class="position-sticky pt-3">
+<ul class="nav flex-column">
+    <li class="nav-item">
+    <a class="nav-link"   href="/">
+        <span data-feather="home"></span>
+        Página Inicial
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link"  href="{% url 'project_management:management' %}">
+        <span data-feather="home"></span>
+        Painel de gerenciamento
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link active" href="{% url 'project_management:add_project' %}">
+        <span data-feather="file"></span>
+        Adicionar projetos
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_methodologies' %}">
+        <span data-feather="file"></span>
+        Metodologias de Data Science
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_team_members' %}">
+        <span data-feather="file"></span>
+        Equipe
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+        <span data-feather="file"></span>
+        Relatório
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'accounts:add_user' %}">
+        <span data-feather="file"></span>
+        Controle de Acessos
+    </a>
+    </li>
+</ul>
+</div>
+{%endblock navlink%}
+{% block main %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="col-md-8">
+            <h1>Insira os dados do Projeto</h1>
+            {% include 'partials/messages.html' %}
+            <form action="." method="POST" id="projectForm" data-steps-url="{% url 'project_management:ajax_load_steps' %}" >
+                {% csrf_token %}
+                <div class="form-group row" id="input-group-1">
+                    <div class="col-12 col-lg-8">
+                        <label for="{{ form.name.id_for_label }}">Nome do Projeto:</label>
+                        {{ form.name|add_class:"form-control"|attr:"autofocus" }}
+                    </div>
+                    <div class="col-12">
+                        <label for="{{ form.description.id_for_label }}">Descrição do Projeto:</label>
+                        {{ form.description|add_class:"form-control"|attr:"rows:2" }}
+                    </div>
+                </div>
+                <div class="form-group row" id="input-group-2">
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.methodology.id_for_label }}">Metodologia:</label>
+                        {{ form.methodology|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.step.id_for_label }}">Etapa atual:</label>
+                        {{ form.step|add_class:"form-control" }}
+                    </div>
+                </div>                
+                <div class="form-group row" id="input-group-3">
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.status.id_for_label }}">Status:</label>
+                        {{ form.status|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.responsible.id_for_label }}">Responsável:</label>
+                        {{ form.responsible|add_class:"form-control" }}
+                    </div>
+                </div>
+                <div class="form-group row" id="input-group-4">
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.programming_language.id_for_label }}">Linguagem de Programação:</label>
+                        {{ form.programming_language|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.technology.id_for_label }}">Tecnologias:</label>
+                        {{ form.technology|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto col-lg-6">
+                        <label for="{{ form.data_source.id_for_label }}">Fonte de Dados:</label>
+                        {{ form.data_source|add_class:"form-control" }}
+                    </div>
+                    <div class="col-12 ">
+                        <label for="{{ form.technique.id_for_label }}">Técnicas:</label>
+                        {{ form.technique|add_class:"form-control"|attr:"rows:2" }}
+                    </div>
+                    <div class="col-12">
+                        <label for="{{ form.references.id_for_label }}">Referências:</label>
+                        {{ form.references|add_class:"form-control"|attr:"rows:3" }}
+                    </div>
+                </div>
+                <div class="form-group row" id="input-group-5">
+                    <div class="col-8">
+                        <label for="{{ form.objective.id_for_label }}">Objetivo:</label>
+                        {{ form.objective|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto">
+                        <label for="{{ deliverable.description.id_for_label }}">Entregável:</label>
+                        {{ form.deliverable|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto">
+                        <label for="{{ form.requester.id_for_label }}">Solicitante:</label>
+                        {{ form.requester|add_class:"form-control" }}
+                    </div>
+                    <div class="col-auto">
+                        <label for="{{ form.requester_sector.id_for_label }}">Setor Solicitante:</label>
+                        {{ form.requester_sector|add_class:"form-control" }}
+                    </div>
+                </div>
+                {% if is_edition %}
+                    <div class="form-group row" id="input-group-6">
+                        <label for="{{ form.feedback.id_for_label }}">Feedback:</label>
+                        {{ form.feedback|add_class:"form-control" }}
+                    </div>
+                {% endif  %}
+                <button class="btn btn-success" type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block footer %}
+<script>
+    $("#id_methodology").change(function () {
+        const url = $("#projectForm").attr("data-steps-url");  
+        const methodologyId = $(this).val();  
+
+        $.ajax({                      
+            url: url,                   
+            data: {
+                'id_methodology': methodologyId       
+            },
+            success: function (data) {  
+                console.log(data)
+                $("#id_step").html(data); 
+            }
+        });
+
+    });
+</script>
+{% endblock footer %}

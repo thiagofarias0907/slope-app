@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block navlink %}
+<div class="position-sticky pt-3">
+<ul class="nav flex-column">
+    <li class="nav-item">
+    <a class="nav-link"   href="/">
+        <span data-feather="home"></span>
+        Página Inicial
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link"  href="{% url 'project_management:management' %}">
+        <span data-feather="home"></span>
+        Painel de gerenciamento
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:add_project' %}">
+        <span data-feather="file"></span>
+        Adicionar projetos
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_methodologies' %}">
+        <span data-feather="file"></span>
+        Metodologias de Data Science
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'project_management:all_team_members' %}">
+        <span data-feather="file"></span>
+        Equipe
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+        <span data-feather="file"></span>
+        Relatório
+    </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link active" href="{% url 'accounts:add_user' %}">
+        <span data-feather="file"></span>
+        Controle de Acessos
+    </a>
+    </li>
+</ul>
+</div>
+{%endblock navlink%}
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 form-group border-bottom">
+  <div class="col-md-9 ms-sm-auto col-lg-10 col-xl-12">
+      <h1>Meu Perfil de Usuário</h1>
+      <div class="text-center">
+         {% if user.is_authenticated %}
+        <div class="card" style="width: 18rem;">
+            <a href="{% url 'accounts:change_profile' %} ">
+                {% if user.user_profile.picture %}
+                    <img src="{{ user.user_profile.picture.url }}" class="card-img-top" alt="profile_pic">
+                {% else %}
+                    <img src="{% static '/img/profile_default.png' %}" class="card-img-top" alt="profile_pic">
+                {% endif %}
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{ user.get_full_name | default:user.username }}
+                </h5>
+                <p class="card-text">
+                    <i>@{{ user.username | default:user.username }}</i>
+                </p>
+                <a href="{% url 'accounts:change_password' %}" type="button" class="btn btn-success"  style="margin:3px">Alterar Senha</a>
+                {% if user.user_profile %}
+                    <a href="{% url 'accounts:update_profile' user.username  %}" type="button" class="btn btn-secondary" style="margin:3px">Alterar Imagem</a>
+                {% else %}
+                    <a href="{% url 'accounts:change_profile' %}" type="button" class="btn btn-secondary" style="margin:3px">Incluir Imagem</a>
+                {% endif %}
+            </div>
+        </div>
+
+      </div>
+
+      {% endif %}
+  </div>
+</div>
+{% endblock main %}
+{% block footer %}
+{% endblock footer %}
